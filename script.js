@@ -1,18 +1,21 @@
 let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
+// Capture install event
+window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
 
-  // Show your custom install button
-  document.getElementById("installBtn").style.display = "block";
+  // Trigger install after first user interaction
+  document.addEventListener("click", triggerInstall, { once: true });
 });
 
-document.getElementById("installBtn").addEventListener("click", async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const choice = await deferredPrompt.userChoice;
-    console.log(choice.outcome);
-    deferredPrompt = null;
-  }
-});
+async function triggerInstall() {
+  if (!deferredPrompt) return;
+
+  deferredPrompt.prompt();
+
+  const choice = await deferredPrompt.userChoice;
+  console.log("Install result:", choice.outcome);
+
+  deferredPrompt = null;
+}
