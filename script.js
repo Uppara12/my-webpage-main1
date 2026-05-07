@@ -2,20 +2,33 @@ let deferredPrompt;
 
 // Capture install event
 window.addEventListener("beforeinstallprompt", (e) => {
+
+  // Prevent automatic mini infobar
   e.preventDefault();
+
+  // Save event
   deferredPrompt = e;
 
-  // Trigger install after first user interaction
-  document.addEventListener("click", triggerInstall, { once: true });
+  // Automatically trigger popup on landing page
+  window.addEventListener("load", () => {
+
+    setTimeout(async () => {
+
+      if (!deferredPrompt) return;
+
+      // Show install popup
+      deferredPrompt.prompt();
+
+      // Wait for user response
+      const choice = await deferredPrompt.userChoice;
+
+      console.log("Install result:", choice.outcome);
+
+      // Clear prompt
+      deferredPrompt = null;
+
+    }, 1000);
+
+  });
+
 });
-
-async function triggerInstall() {
-  if (!deferredPrompt) return;
-
-  deferredPrompt.prompt();
-
-  const choice = await deferredPrompt.userChoice;
-  console.log("Install result:", choice.outcome);
-
-  deferredPrompt = null;
-}
