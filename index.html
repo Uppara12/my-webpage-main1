@@ -3,17 +3,13 @@
 <html lang="en">
     <head>
         <title>Website</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
         <link rel="manifest" href="manifest.json"> 
         <meta name="theme-color" content="#ff7200">
     </head>
     <body>
-        <script>
-            if ('serviceWorker' in navigator) {
-                 navigator.serviceWorker.register('service-worker.js')
-                 .then(() => console.log("Service Worker Registered"));
-                }
-        </script>
+        
    
         <div class="main">
             <div class="navbar">
@@ -61,5 +57,11 @@
             </div>
         </div>
          <script src="script.js"></script>
+         <script>
+            if ('serviceWorker' in navigator) {
+                 navigator.serviceWorker.register('service-worker.js')
+                 .then(() => console.log("Service Worker Registered"));
+                }
+        </script>
         <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
     </body>

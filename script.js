@@ -1,29 +1,29 @@
 let deferredPrompt;
 
-window.addEventListener("beforeinstallprompt", async (e) => {
+window.addEventListener("beforeinstallprompt", (e) => {
 
-  // Stop automatic mini infobar
+  // Prevent mini infobar
   e.preventDefault();
 
-  // Save the event
+  console.log("beforeinstallprompt triggered");
+
+  // Save event
   deferredPrompt = e;
 
-  // Wait 1 second after landing page opens
+  // Auto popup after 2 seconds
   setTimeout(async () => {
 
-    if (!deferredPrompt) return;
+    if (deferredPrompt) {
 
-    // Show install popup
-    deferredPrompt.prompt();
+      deferredPrompt.prompt();
 
-    // Wait for user choice
-    const choice = await deferredPrompt.userChoice;
+      const result = await deferredPrompt.userChoice;
 
-    console.log("Install result:", choice.outcome);
+      console.log("User Choice:", result.outcome);
 
-    // Clear saved event
-    deferredPrompt = null;
+      deferredPrompt = null;
+    }
 
-  }, 1000);
+  }, 2000);
 
 });
