@@ -1,7 +1,7 @@
 {
   "name": "Rajii Website",
   "short_name": "Rajii",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#ff7200",

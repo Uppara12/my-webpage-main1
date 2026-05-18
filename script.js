@@ -1,19 +1,34 @@
 let deferredPrompt;
 
+// Register Service Worker
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("./service-worker.js")
+      .then((reg) => {
+        console.log("Service Worker Registered", reg);
+      })
+      .catch((err) => {
+        console.log("Service Worker Registration Failed", err);
+      });
+  });
+}
+
+// Install Prompt
 window.addEventListener("beforeinstallprompt", async (e) => {
 
-  // Stop default install mini-infobar
+  // Prevent automatic mini infobar
   e.preventDefault();
 
   // Save event
   deferredPrompt = e;
 
-  // Immediately show install popup
+  // Show install popup automatically
   if (deferredPrompt) {
 
     deferredPrompt.prompt();
 
-    // Wait for user action
+    // Wait for user choice
     const result = await deferredPrompt.userChoice;
 
     console.log("User choice:", result.outcome);
