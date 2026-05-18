@@ -3,37 +3,36 @@ let deferredPrompt;
 // Register Service Worker
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("./service-worker.js")
-      .then((reg) => {
-        console.log("Service Worker Registered", reg);
-      })
-      .catch((err) => {
-        console.log("Service Worker Registration Failed", err);
-      });
+    navigator.serviceWorker.register("./service-worker.js");
   });
 }
 
-// Install Prompt
-window.addEventListener("beforeinstallprompt", async (e) => {
+// Save install event
+window.addEventListener("beforeinstallprompt", (e) => {
 
-  // Prevent automatic mini infobar
   e.preventDefault();
 
-  // Save event
   deferredPrompt = e;
 
-  // Show install popup automatically
-  if (deferredPrompt) {
+  // Show custom popup automatically
+  const installNow = confirm("Install this app?");
+
+  if (installNow) {
 
     deferredPrompt.prompt();
 
-    // Wait for user choice
-    const result = await deferredPrompt.userChoice;
+    deferredPrompt.userChoice.then((choiceResult) => {
 
-    console.log("User choice:", result.outcome);
+      if (choiceResult.outcome === "accepted") {
+        console.log("User accepted install");
+      } else {
+        console.log("User dismissed install");
+      }
 
-    deferredPrompt = null;
+      deferredPrompt = null;
+
+    });
+
   }
 
 });
